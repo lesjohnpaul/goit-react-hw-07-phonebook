@@ -1,4 +1,5 @@
-@import-normalize; /* bring in normalize.css styles */
+@import-normalize;
+/* bring in normalize.css styles */
 
 body {
   margin: 0;
@@ -7,9 +8,60 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to right, #99e3f4, #8ac0e0, #0022e42d);
+  /* Smooth gradient background */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  color: #63636a;
+  /* Light color for text for contrast against the background */
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+div {
+  margin: 50px auto;
+  width: 500px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+section {
+  padding: 20px;
+}
+
+h1,
+h2 {
+  padding: 30px;
+  font-weight: bold;
+  text-align: center;
+  background: linear-gradient(to right, #2193b0, #6dd5ed);
+  -webkit-background-clip: text;
+  color: transparent;
+  box-shadow: none;
 }
