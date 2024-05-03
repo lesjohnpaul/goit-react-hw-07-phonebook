@@ -3,12 +3,19 @@ import css from './ContactListItem.module.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 export const ContactListItem = ({ filteredContact, deleteContact }) => {
-  const handleDelete = () => {
-    deleteContact(filteredContact.id);
-    Notify.success(
-      `${filteredContact.name} was successfully deleted from your contacts!`,
-      { position: 'center-top' }
-    );
+  const handleDelete = async () => {
+    try {
+      await deleteContact(filteredContact.id); // Assuming deleteContact now returns a promise
+      Notify.success(
+        `${filteredContact.name} was successfully deleted from your contacts!`,
+        { position: 'center-top' }
+      );
+    } catch (error) {
+      Notify.failure(
+        `Failed to delete ${filteredContact.name}: ${error.message}`,
+        { position: 'center-top' }
+      );
+    }
   };
 
   return (

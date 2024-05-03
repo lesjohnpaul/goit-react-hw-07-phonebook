@@ -7,10 +7,13 @@ import { deleteContact } from '../PhonebookRedux/contactsSlice';
 export const ContactList = () => {
   const dispatch = useDispatch();
   const { items, filter } = useSelector(state => state.contacts);
+
+  // Filtering contacts based on the input from the filter state
   const filteredContacts = items.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  // Handler for deleting a contact
   const handleDelete = id => {
     dispatch(deleteContact(id));
   };

@@ -7,6 +7,9 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 export const ContactForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts.items);
+  const isLoading = useSelector(state => state.contacts.isLoading);
+  const error = useSelector(state => state.contacts.error);
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -15,7 +18,10 @@ export const ContactForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!name.trim() || !number.trim()) return;
+    if (!name.trim() || !number.trim()) {
+      Notify.failure('Please fill in all fields.');
+      return;
+    }
 
     const existingContact = contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -25,7 +31,7 @@ export const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact(name.trim(), number.trim()));
+    dispatch(addContact({ name: name.trim(), phone: number.trim() }));
     Notify.success(`${name} is successfully added to your contacts!`);
 
     setName('');
@@ -42,6 +48,7 @@ export const ContactForm = () => {
           required
           value={name}
           onChange={handleNameChange}
+          disabled={isLoading}
         />
       </label>
       <label className={css.formField}>
@@ -52,11 +59,13 @@ export const ContactForm = () => {
           required
           value={number}
           onChange={handleNumberChange}
+          disabled={isLoading}
         />
       </label>
-      <button className={css.btnSubmit} type="submit">
-        Add Contact
+      <button className={css.btnSubmit} type="submit" disabled={isLoading}>
+        {isLoading ? 'Adding...' : 'Add Contact'}
       </button>
+      {error && <p className={css.error}>{error}</p>}
     </form>
   );
 };

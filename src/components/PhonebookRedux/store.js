@@ -1,20 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import storage from 'redux-persist/lib/storage';
 import contactsReducer from './contactsSlice';
-
 
 const persistConfig = {
   key: 'root',
   storage,
 };
 
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-});
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, contactsReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
