@@ -6,7 +6,9 @@ import { deleteContact } from '../PhonebookRedux/contactsSlice';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const { items, filter } = useSelector(state => state.contacts);
+  const { items, filter, isLoading, error } = useSelector(
+    state => state.contacts
+  );
 
   // Filtering contacts based on the input from the filter state
   const filteredContacts = items.filter(contact =>
@@ -18,15 +20,22 @@ export const ContactList = () => {
     dispatch(deleteContact(id));
   };
 
+  if (isLoading) return <p>Loading contacts...</p>;
+  if (error) return <p>Error loading contacts: {error}</p>;
+
   return (
     <ul className={css.ulBox}>
-      {filteredContacts.map(filteredContact => (
-        <ContactListItem
-          key={filteredContact.id}
-          filteredContact={filteredContact}
-          deleteContact={() => handleDelete(filteredContact.id)}
-        />
-      ))}
+      {filteredContacts.length > 0 ? (
+        filteredContacts.map(contact => (
+          <ContactListItem
+            key={contact.id}
+            contact={contact}
+            onDelete={() => handleDelete(contact.id)}
+          />
+        ))
+      ) : (
+        <p>No contacts found.</p>
+      )}
     </ul>
   );
 };

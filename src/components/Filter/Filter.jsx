@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilter } from '../PhonebookRedux/contactsSlice';
 import css from './Filter.module.css';
@@ -9,15 +9,18 @@ export const Filter = () => {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState(filter);
 
-  const debouncedSetFilter = debounce(value => {
-    dispatch(setFilter(value));
-  }, 300);
+  const debouncedSetFilter = useMemo(
+    () =>
+      debounce(value => {
+        dispatch(setFilter(value));
+      }, 300),
+    [dispatch]
+  );
 
   useEffect(() => {
     debouncedSetFilter(inputValue);
-    // Cleanup to prevent stale closures if component unmounts
-    return () => debouncedSetFilter.cancel();
-  }, [debouncedSetFilter, inputValue]);
+    return () => debouncedSetFilter.cancel(); // Cleanup to prevent stale closures if component unmounts
+  }, [inputValue, debouncedSetFilter]);
 
   const handleFilterChange = e => {
     setInputValue(e.target.value);
@@ -32,6 +35,7 @@ export const Filter = () => {
         placeholder="Search by name"
         value={inputValue}
         onChange={handleFilterChange}
+        aria-label="Search contacts by name"
       />
     </div>
   );
