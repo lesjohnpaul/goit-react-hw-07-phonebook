@@ -31,7 +31,7 @@ export const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ name: name.trim(), phone: number.trim() }));
+    dispatch(addContact({ name: name.trim(), number: number.trim() }));
     Notify.success(`${name} is successfully added to your contacts!`);
 
     setName('');
@@ -62,7 +62,11 @@ export const ContactForm = () => {
           disabled={isLoading}
         />
       </label>
-      <button className={css.btnSubmit} type="submit" disabled={isLoading}>
+      <button
+        className={css.btnSubmit}
+        type="submit"
+        disabled={isLoading || !name || !number}
+      >
         {isLoading ? 'Adding...' : 'Add Contact'}
       </button>
       {error && <p className={css.error}>{error}</p>}
