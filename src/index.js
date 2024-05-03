@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './PhonebookRedux/store';
+import { store, persistor } from './components/PhonebookRedux/store';
 import { App } from './components/App'; // Corrected import statement
 import './index.css';
 

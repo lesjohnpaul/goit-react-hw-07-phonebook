@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../PhonebookRedux/contactsSlice'; // Adjust the path as necessary
+import { addContact } from '../PhonebookRedux/contactsSlice'; // Adjust the path as necessary
 import css from './ContactForm.module.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
