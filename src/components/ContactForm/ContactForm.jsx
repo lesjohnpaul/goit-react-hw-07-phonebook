@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../PhonebookRedux/contactsSlice'; // Adjust the path as necessary
+import { useState } from 'react';
 import css from './ContactForm.module.css';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/contacts/contactsOperation';
+import { selectContacts } from '../../redux/contacts/contactsSelector';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.items);
-  const isLoading = useSelector(state => state.contacts.isLoading);
-  const error = useSelector(state => state.contacts.error);
+  const contacts = useSelector(selectContacts);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleNameChange = e => setName(e.target.value);
-  const handleNumberChange = e => setNumber(e.target.value);
+  const handleNameChange = e => {
+    setName(e.target.value);
+  };
+
+  const handleNumberChange = e => {
+    setNumber(e.target.value);
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!name.trim() || !number.trim()) {
-      Notify.failure('Please fill in all fields.');
+
+    if (name.trim() === '' || number.trim() === '') {
       return;
     }
 
@@ -27,13 +30,14 @@ export const ContactForm = () => {
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
     if (existingContact) {
-      Notify.failure(`${name} is already in your contacts!`);
+      alert(`${name} is already in contacts!`);
       return;
     }
 
-    dispatch(addContact({ name: name.trim(), number: number.trim() }));
-    Notify.success(`${name} is successfully added to your contacts!`);
+    // dispatch(addContact({ name: name, number: number }));
+    dispatch(addContact({ name, number }));
 
+    // Reset Form Fields upon submitting
     setName('');
     setNumber('');
   };
@@ -45,31 +49,31 @@ export const ContactForm = () => {
         <input
           type="text"
           name="name"
+          // add \ before - in [' \-] to make it work (LMS)
+          pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan."
           required
           value={name}
           onChange={handleNameChange}
-          disabled={isLoading}
         />
       </label>
+
       <label className={css.formField}>
         <p className={css.formLabel}>Number</p>
         <input
           type="tel"
           name="number"
+          // add \ before - in [\-.\s] to make it work (LMS)
+          pattern="\+?\d{1,4}?[\-.\s]?\(?\d{1,3}?\)?[\-.\s]?\d{1,4}[\-.\s]?\d{1,4}[\-.\s]?\d{1,9}"
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           value={number}
           onChange={handleNumberChange}
-          disabled={isLoading}
         />
       </label>
-      <button
-        className={css.btnSubmit}
-        type="submit"
-        disabled={isLoading || !name || !number}
-      >
-        {isLoading ? 'Adding...' : 'Add Contact'}
+      <button className={css.formButton} type="submit">
+        Add Contact
       </button>
-      {error && <p className={css.error}>{error}</p>}
     </form>
   );
 };

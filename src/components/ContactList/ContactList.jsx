@@ -1,41 +1,43 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { ContactListItem } from 'components/ContactListItem/ContactListItem';
-import css from './ContactList.module.css';
-import { deleteContact } from '../PhonebookRedux/contactsSlice';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+// prettier-ignore
+import { selectFilteredContacts, selectError, selectIsLoading } from '../../redux/contacts/contactsSelector';
+import { fetchContacts } from '../../redux/contacts/contactsOperation';
+import { ContactListItem } from './ContactListItem/ContactListItem';
+import { Loader } from 'components/Loader/Loader';
 
 export const ContactList = () => {
+  const filteredContacts = useSelector(selectFilteredContacts);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+
   const dispatch = useDispatch();
-  const { items, filter, isLoading, error } = useSelector(
-    state => state.contacts
-  );
 
-  // Filtering contacts based on the input from the filter state
-  const filteredContacts = items.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-  // Handler for deleting a contact
-  const handleDelete = id => {
-    dispatch(deleteContact(id));
-  };
-
-  if (isLoading) return <p>Loading contacts...</p>;
-  if (error) return <p>Error loading contacts: {error}</p>;
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   return (
-    <ul className={css.ulBox}>
-      {filteredContacts.length > 0 ? (
-        filteredContacts.map(contact => (
-          <ContactListItem
-            key={contact.id}
-            contact={contact}
-            onDelete={() => handleDelete(contact.id)}
-          />
-        ))
-      ) : (
-        <p>No contacts found.</p>
+    <ul>
+      {/* if loading and not error, show Loader */}
+      {isLoading && !error && <Loader />}
+
+      {/* if not loading, not error and filtered contacts is empty, show warning */}
+      {!isLoading && !error && filteredContacts.length === 0 && (
+        <p>The Phonebook is empty. Please add a contact</p>
       )}
+
+      {/* if not loading, not error and have atleast 1 filtered contact, show ContactListItem */}
+      {!isLoading &&
+        !error &&
+        filteredContacts.length > 0 &&
+        filteredContacts.map(filteredContact => (
+          <ContactListItem
+            key={filteredContact.id}
+            filteredContact={filteredContact}
+          />
+        ))}
     </ul>
   );
 };
