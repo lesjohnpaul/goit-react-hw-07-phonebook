@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const API_URL = 'https://66345bc49bb0df2359a14e22.mockapi.io/api/contacts';
-const API_URL = 'https://66345bc49bb0df2359a14e22.mockapi.io/api/cantacts';
 
 // Async thunks
 export const fetchContacts = createAsyncThunk('contacts/fetchAll', async (_, { rejectWithValue }) => {
