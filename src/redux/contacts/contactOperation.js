@@ -1,13 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-// Please create your own personal backend for development with the UI service mockapi.io
-// REFERENCE: https://mockapi.io/
-axios.defaults.baseURL = 'https://65e597c6d7f0758a76e6c681.mockapi.io';
 
-/*
- * GET @ /contacts
- */
+axios.defaults.baseURL = 'https://66345bc49bb0df2359a14e22.mockapi.io/';
+
+
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
   async (_, thunkAPI) => {
@@ -20,10 +17,7 @@ export const fetchContacts = createAsyncThunk(
   }
 );
 
-/*
- * POST @ /contacts
- * body: { name, number }
- */
+
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   async ({ name, number }, thunkAPI) => {
@@ -36,9 +30,7 @@ export const addContact = createAsyncThunk(
   }
 );
 
-/*
- * DELETE @ /contacts/:id
- */
+
 export const deleteContact = createAsyncThunk(
   'contacts/deleteContact',
   async (contactId, thunkAPI) => {

@@ -1,7 +1,7 @@
 import css from './ContactListItem.module.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../../redux/contacts/contactsOperation';
+import { deleteContact } from '../../../redux/contacts/contactOperation';
 
 export const ContactListItem = ({ filteredContact }) => {
   const dispatch = useDispatch();
@@ -15,7 +15,9 @@ export const ContactListItem = ({ filteredContact }) => {
     <li className={css.contactListItem}>
       <p>{filteredContact.name}:</p>
       <p>{filteredContact.number}</p>
-      <button onClick={handleDelete}>Delete</button>
+      <button onClick={handleDelete} className={css.btnDelete}>
+        Delete
+      </button>
     </li>
   );
 };

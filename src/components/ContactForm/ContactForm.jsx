@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contacts/contactsOperation';
+import { addContact } from '../../redux/contacts/contactOperation';
 import { selectContacts } from '../../redux/contacts/contactsSelector';
 
 export const ContactForm = () => {
@@ -71,7 +71,7 @@ export const ContactForm = () => {
           onChange={handleNumberChange}
         />
       </label>
-      <button className={css.formButton} type="submit">
+      <button className={css.btnSubmit} type="submit">
         Add Contact
       </button>
     </form>

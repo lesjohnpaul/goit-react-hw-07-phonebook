@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 // prettier-ignore
 import { selectFilteredContacts, selectError, selectIsLoading } from '../../redux/contacts/contactsSelector';
-import { fetchContacts } from '../../redux/contacts/contactsOperation';
+import { fetchContacts } from '../../redux/contacts/contactOperation';
 import { ContactListItem } from './ContactListItem/ContactListItem';
 import { Loader } from 'components/Loader/Loader';
 
